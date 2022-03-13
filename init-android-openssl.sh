@@ -17,8 +17,8 @@
 #
 
 #IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl
-IJK_OPENSSL_UPSTREAM=https://github.com/Bilibili/openssl.git
-IJK_OPENSSL_FORK=https://github.com/Bilibili/openssl.git
+IJK_OPENSSL_UPSTREAM=https://github.91chi.fun/https://github.com/haoliweimiao/openssl.git
+IJK_OPENSSL_FORK=https://github.91chi.fun/https://github.com/haoliweimiao/openssl.git
 IJK_OPENSSL_COMMIT=OpenSSL_1_0_2q
 IJK_OPENSSL_LOCAL_REPO=extra/openssl
 
