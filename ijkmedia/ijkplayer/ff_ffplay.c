@@ -1350,6 +1350,10 @@ retry:
             last_duration = vp_duration(is, lastvp, vp);
             delay = compute_target_delay(ffp, last_duration, is);
 
+            // modify by von.wu. 2023-05-26 14:52:06
+            // 移除延时
+            // delay = 0L;
+
             time= av_gettime_relative()/1000000.0;
             if (isnan(is->frame_timer) || time < is->frame_timer)
                 is->frame_timer = time;
@@ -1511,6 +1515,24 @@ static void alloc_picture(FFPlayer *ffp, int frame_format)
 
 static int queue_picture(FFPlayer *ffp, AVFrame *src_frame, double pts, double duration, int64_t pos, int serial)
 {
+    static long perFrame = 0L;
+    static struct timeval tv;
+    gettimeofday(&tv, NULL);
+    long nowTime = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    static long lastTime = 0L;
+    if (lastTime == 0L)
+    {
+        lastTime = nowTime;
+    }
+
+    if (nowTime - lastTime > 1000) {
+        lastTime = nowTime;
+        av_log(NULL, AV_LOG_INFO, "ijkplayer video frame:%ld\n", perFrame);
+        perFrame = 0;
+    } else {
+        perFrame++;
+    }
+
     VideoState *is = ffp->is;
     Frame *vp;
     int video_accurate_seek_fail = 0;

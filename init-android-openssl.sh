@@ -17,8 +17,8 @@
 #
 
 #IJK_OPENSSL_UPSTREAM=https://github.com/openssl/openssl
-IJK_OPENSSL_UPSTREAM=https://github.com/Bilibili/openssl.git
-IJK_OPENSSL_FORK=https://github.com/Bilibili/openssl.git
+IJK_OPENSSL_UPSTREAM=git@github.com:haoliweimiao/IJKPlayer-openssl.git
+IJK_OPENSSL_FORK=git@github.com:haoliweimiao/IJKPlayer-openssl.git
 IJK_OPENSSL_COMMIT=OpenSSL_1_0_2n
 IJK_OPENSSL_LOCAL_REPO=extra/openssl
 
@@ -37,8 +37,8 @@ function pull_fork()
     cd -
 }
 
-pull_fork "armv5"
-pull_fork "armv7a"
+# pull_fork "armv5"
+# pull_fork "armv7a"
 pull_fork "arm64"
-pull_fork "x86"
-pull_fork "x86_64"
+# pull_fork "x86"
+# pull_fork "x86_64"

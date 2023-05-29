@@ -17,8 +17,8 @@
 #
 
 
-IJK_LIBYUV_UPSTREAM=https://github.com/haoliweimiao/IJKPlayer-libyuv.git
-IJK_LIBYUV_FORK=https://github.com/haoliweimiao/IJKPlayer-libyuv.git
+IJK_LIBYUV_UPSTREAM=git@github.com:haoliweimiao/IJKPlayer-libyuv.git
+IJK_LIBYUV_FORK=git@github.com:haoliweimiao/IJKPlayer-libyuv.git
 IJK_LIBYUV_COMMIT=ijk-r0.2.1-dev
 IJK_LIBYUV_LOCAL_REPO=extra/libyuv
 
