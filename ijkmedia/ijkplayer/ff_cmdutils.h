@@ -28,10 +28,10 @@
 
 #include "ff_ffinc.h"
 
-void            print_error(const char *filename, int err);
-AVDictionary  **setup_find_stream_info_opts(AVFormatContext *s, AVDictionary *codec_opts);
-AVDictionary   *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
-                                  AVFormatContext *s, AVStream *st, AVCodec *codec);
+// void            print_error(const char *filename, int err);
+// AVDictionary  **setup_find_stream_info_opts(AVFormatContext *s, AVDictionary *codec_opts);
+// AVDictionary   *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
+//                                   AVFormatContext *s, AVStream *st, AVCodec *codec);
 /**
  * Realloc array to hold new_size elements of elem_size.
  * Calls exit() on failure.
@@ -42,11 +42,11 @@ AVDictionary   *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
  * @param new_size number of elements to place in reallocated array
  * @return reallocated array
  */
-void *grow_array(void *array, int elem_size, int *size, int new_size);
+// void *grow_array(void *array, int elem_size, int *size, int new_size);
 
 #define GROW_ARRAY(array, nb_elems)\
     array = grow_array(array, sizeof(*array), &nb_elems, nb_elems + 1)
 
-double          get_rotation(AVStream *st);
+// double          get_rotation(AVStream *st);
 
 #endif

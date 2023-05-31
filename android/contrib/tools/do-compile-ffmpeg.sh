@@ -58,7 +58,7 @@ FF_EXTRA_CFLAGS=
 FF_EXTRA_LDFLAGS=
 FF_DEP_LIBS=
 
-FF_MODULE_DIRS="compat libavcodec libavfilter libavformat libavutil libswresample libswscale"
+FF_MODULE_DIRS="compat libavcodec libavfilter libavformat libavutil libswresample libswscale libavdevice libpostproc libavresample"
 FF_ASSEMBLER_SUB_DIRS=
 
 
@@ -315,7 +315,7 @@ echo "[*] compile ffmpeg"
 echo "--------------------"
 cp config.* $FF_PREFIX
 make $FF_MAKE_FLAGS > /dev/null
-make install
+make -j8 install
 mkdir -p $FF_PREFIX/include/libffmpeg
 cp -f config.h $FF_PREFIX/include/libffmpeg/config.h
 
@@ -330,6 +330,7 @@ FF_C_OBJ_FILES=
 FF_ASM_OBJ_FILES=
 for MODULE_DIR in $FF_MODULE_DIRS
 do
+    echo "start link module => $MODULE_DIR"
     C_OBJ_FILES="$MODULE_DIR/*.o"
     if ls $C_OBJ_FILES 1> /dev/null 2>&1; then
         echo "link $MODULE_DIR/*.o"
@@ -386,4 +387,6 @@ for f in $FF_PREFIX/lib/pkgconfig/*.pc; do
     mysedi $f 's/-lavutil/-lijkffmpeg/g'
     mysedi $f 's/-lswresample/-lijkffmpeg/g'
     mysedi $f 's/-lswscale/-lijkffmpeg/g'
+    mysedi $f 's/-lavdevice/-lijkffmpeg/g'
+    mysedi $f 's/-lpostproc/-lijkffmpeg/g'
 done

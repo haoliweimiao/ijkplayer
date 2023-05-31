@@ -40,6 +40,8 @@
 #include "ijksdl/android/ijksdl_codec_android_mediadef.h"
 #include "ijkavformat/ijkavformat.h"
 
+#include "ffprobe.h"
+
 #define JNI_MODULE_PACKAGE      "tv/danmaku/ijk/media/player"
 #define JNI_CLASS_IJKPLAYER     "tv/danmaku/ijk/media/player/IjkMediaPlayer"
 #define JNI_IJK_MEDIA_EXCEPTION "tv/danmaku/ijk/media/player/exceptions/IjkMediaException"
@@ -1056,6 +1058,38 @@ LABEL_RETURN:
 void monstartup(const char *libname);
 void moncleanup(void);
 
+static jint IjkMediaPlayer_ffprobeCommand(JNIEnv *env, jclass type, jint argc,
+                           jobjectArray args)
+{
+    MPTRACE("%s\n", __func__);
+    int i = 0;
+    char **argv = NULL;
+    jstring *strr = NULL;
+ 
+    if (args != NULL) {
+        argv = (char **) malloc(sizeof(char *) * argc);
+        strr = (jstring *) malloc(sizeof(jstring) * argc);
+ 
+        for (i = 0; i < argc; ++i) {
+            strr[i] = (jstring)(*env)->GetObjectArrayElement(env, args, i);
+            argv[i] = (char *)(*env)->GetStringUTFChars(env, strr[i], 0);
+            ALOGD("args: %s", argv[i]);
+        }
+    }
+ 
+    ALOGD("Run ffmpeg");
+    int result = ffprobe_main(argc, argv);
+    ALOGD("ffmpeg result %d", result);
+ 
+    for (i = 0; i < argc; ++i) {
+        (*env)->ReleaseStringUTFChars(env, strr[i], argv[i]);
+    }
+    free(argv);
+    free(strr);
+ 
+    return result;
+}
+
 static void
 IjkMediaPlayer_native_profileBegin(JNIEnv *env, jclass clazz, jstring libName)
 {
@@ -1180,6 +1214,7 @@ static JNINativeMethod g_methods[] = {
 
     { "native_setLogLevel",     "(I)V",                     (void *) IjkMediaPlayer_native_setLogLevel },
     { "_setFrameAtTime",        "(Ljava/lang/String;JJII)V", (void *) IjkMediaPlayer_setFrameAtTime },
+    {"ffprobeCommand",          "(I[Ljava/lang/String;)I",  (void *) IjkMediaPlayer_ffprobeCommand},
 };
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved)

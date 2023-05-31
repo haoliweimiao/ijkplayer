@@ -65,6 +65,7 @@
 
 #include "ijksdl/ijksdl_log.h"
 #include "ijkavformat/ijkavformat.h"
+#include "cmdutils.h"
 #include "ff_cmdutils.h"
 #include "ff_fferror.h"
 #include "ff_ffpipeline.h"
