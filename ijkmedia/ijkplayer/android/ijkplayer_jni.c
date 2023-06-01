@@ -1059,7 +1059,7 @@ void monstartup(const char *libname);
 void moncleanup(void);
 
 static jint IjkMediaPlayer_ffprobeCommand(JNIEnv *env, jclass type, jint argc,
-                           jobjectArray args)
+                           jobjectArray args, jstring outFile)
 {
     MPTRACE("%s\n", __func__);
     int i = 0;
@@ -1076,14 +1076,17 @@ static jint IjkMediaPlayer_ffprobeCommand(JNIEnv *env, jclass type, jint argc,
             ALOGD("args: %s", argv[i]);
         }
     }
- 
+
+    jboolean isCopy = false;
+    const char* outFile_ = (*env)->GetStringUTFChars(env, outFile, 0);
     ALOGD("Run ffmpeg");
-    int result = ffprobe_main(argc, argv);
+    int result = ffprobe_main(argc, argv, outFile_);
     ALOGD("ffmpeg result %d", result);
  
     for (i = 0; i < argc; ++i) {
         (*env)->ReleaseStringUTFChars(env, strr[i], argv[i]);
     }
+    (*env)->ReleaseStringUTFChars(env, outFile, outFile_);
     free(argv);
     free(strr);
  
@@ -1214,7 +1217,7 @@ static JNINativeMethod g_methods[] = {
 
     { "native_setLogLevel",     "(I)V",                     (void *) IjkMediaPlayer_native_setLogLevel },
     { "_setFrameAtTime",        "(Ljava/lang/String;JJII)V", (void *) IjkMediaPlayer_setFrameAtTime },
-    {"ffprobeCommand",          "(I[Ljava/lang/String;)I",  (void *) IjkMediaPlayer_ffprobeCommand},
+    {"ffprobeCommand",          "(I[Ljava/lang/String;Ljava/lang/String;)I",  (void *) IjkMediaPlayer_ffprobeCommand},
 };
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved)

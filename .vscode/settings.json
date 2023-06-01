@@ -37,6 +37,7 @@
         "tuple": "c",
         "type_traits": "c",
         "utility": "c",
-        "ff_ffplay_options.h": "c"
+        "ff_ffplay_options.h": "c",
+        "istream": "cpp"
     }
 }

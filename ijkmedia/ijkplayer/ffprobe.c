@@ -67,9 +67,29 @@
 #  define pthread_mutex_unlock(a) do{}while(0)
 #endif
 
-// #if defined(__ANDROID__)
-// #define printf(...) ALOGD(__VA_ARGS__)
-// #endif
+static char ffprobeFile[2048] = "/sdcard/ffprobe.log";
+
+#if defined(__ANDROID__)
+#define printf(...) \
+{ \
+    ALOGD(__VA_ARGS__); \
+    FILE * pFile; \
+    pFile = fopen(ffprobeFile, "a");  \
+    if (NULL == pFile) \
+    { \
+        printf("error"); \
+        return 0; \
+    } \
+    fprintf(pFile, __VA_ARGS__); \
+    fclose(pFile); \
+}
+#endif
+
+void deleteFile(const char *pFileName)//这是要保存的名字和地址
+{
+    remove(pFileName);
+}
+
 
 typedef struct InputStream {
     AVStream *st;
@@ -3551,8 +3571,13 @@ static inline int check_section_show_entries(int section_id)
             do_show_##varname = 1;                                      \
     } while (0)
 
-int ffprobe_main(int argc, char **argv)
+int ffprobe_main(int argc, char **argv, const char * outPath)
 {
+    deleteFile(outPath);
+    memset(ffprobeFile, '\0', 2048);
+    strcat(ffprobeFile, outPath);
+    ALOGD("ffprobe_main ffprobeFile:%s", ffprobeFile);
+
     const Writer *w;
     WriterContext *wctx;
     char *buf;
